@@ -1,4 +1,9 @@
-import { QueryFunction, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  QueryFunction,
+  useQuery,
+  UseQueryOptions,
+} from '@tanstack/react-query'
 import { useState } from 'react'
 
 export type BaseFilter = {
@@ -17,29 +22,39 @@ export function useList<TFilter extends BaseFilter, TData>(
     'queryKey' | 'queryFn'
   >
 ) {
-  const resetFilter = { limit: 10, offset: 0, ...initialFilter } as TFilter
-  const [filter, setFilter] = useState<TFilter>(resetFilter)
+  const resetParams = { limit: 10, offset: 0, ...initialFilter } as TFilter
+  const [params, setParams] = useState<TFilter>(resetParams)
 
   const queryResult = useQuery({
-    queryKey: keyMethod(filter).queryKey,
-    queryFn: keyMethod(filter).queryFn,
+    queryKey: keyMethod(params).queryKey,
+    queryFn: keyMethod(params).queryFn,
+    placeholderData: keepPreviousData,
     ...options,
   })
 
   const onPageMove = (index: number) => {
-    setFilter((prev) => ({ ...prev, offset: (index - 1) * resetFilter.limit! }))
+    setParams((prev) => ({ ...prev, offset: (index - 1) * resetParams.limit! }))
+  }
+  const onFilter = (newParams: Partial<TFilter>) => {
+    setParams((prev) => ({ ...prev, ...newParams }))
   }
 
   return {
     queryResult,
-    filter,
-    setFilter,
+
+    list: queryResult?.data?.list,
+    listCount: queryResult?.data?.count,
+
+    params,
+    setParams,
+
     pagination: {
       pageCount: Math.ceil(
-        (queryResult?.data?.count || 0) / resetFilter.limit!
+        (queryResult?.data?.count || 0) / resetParams.limit!
       ),
-      pageIndex: (filter?.offset || 0) / resetFilter.limit! + 1,
+      pageIndex: (params?.offset || 0) / resetParams.limit! + 1,
       pageMove: onPageMove,
     },
+    onFilter,
   }
 }

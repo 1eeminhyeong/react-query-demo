@@ -1,7 +1,7 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { useList } from './useList'
+import { BaseFilter, useList } from './useList'
 
 const BASE_URL = 'https://my-json-server.typicode.com/1eeminhyeong/demo/'
 
@@ -10,9 +10,7 @@ const axiosInstance = axios.create({
   timeout: 30000,
 })
 
-type TodoFilter = {
-  offset?: number
-  limit?: number
+type TodoFilter = BaseFilter & {
   done?: number
 }
 type Todo = {
@@ -22,7 +20,7 @@ type Todo = {
 
 const todoKeys = createQueryKeys('todo', {
   all: null,
-  list: (filter: TodoFilter) => ({
+  list: (filter?: TodoFilter) => ({
     queryKey: [{ filter }],
     queryFn: async () => {
       const [list, count] = await Promise.all([
@@ -35,12 +33,8 @@ const todoKeys = createQueryKeys('todo', {
   }),
 })
 
-export const useTodoList = () =>
-  useQuery(todoKeys.list({ offset: 0, limit: 10 }))
+export const useTodoList = () => useQuery(todoKeys.list())
 
 export const useTodoListQuery = () => {
-  return useList(todoKeys.list, {
-    offset: 0,
-    limit: 10,
-  })
+  return useList(todoKeys.list)
 }

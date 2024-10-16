@@ -7,12 +7,12 @@ import { useTodoListQuery } from './queries'
 function App() {
   const [count, setCount] = useState(0)
 
-  const { queryResult, filter, setFilter, pagination } = useTodoListQuery()
+  const { setParams, pagination, list } = useTodoListQuery()
 
-  console.log(queryResult?.data)
-  console.log(filter)
-  console.log(queryResult?.data?.list)
-  console.log(pagination)
+  // console.log(queryResult?.data)
+  // console.log(params)
+  // console.log(queryResult?.data?.list)
+  // console.log(pagination)
 
   return (
     <>
@@ -25,12 +25,13 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <ol>{list?.map(({ id, title }) => <li key={id}>{title}</li>)}</ol>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
 
-        <button onClick={() => setFilter((prev) => ({ ...prev, done: 0 }))}>
+        <button onClick={() => setParams((prev) => ({ ...prev, done: 0 }))}>
           set Done True
         </button>
 
