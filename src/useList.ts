@@ -31,7 +31,7 @@ export function useList<TFilter extends BaseFilter, TData>(
   }
 
   return {
-    ...queryResult,
+    queryResult,
     filter,
     setFilter,
     pagination: {
