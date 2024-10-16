@@ -7,6 +7,7 @@ const config = {
   tabWidth: 2,
   semi: false,
   singleQuote: true,
+  printWidth: 150,
 }
 
 export default config
