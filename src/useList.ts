@@ -6,27 +6,28 @@ import {
 } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export type BaseParams = {
+export type BaseParams<T> = T & {
   offset?: number
   limit?: number
 }
 
-export function useList<
-  TParams extends BaseParams = BaseParams,
-  TData = unknown,
->(
-  keyMethod: (filter: TParams) => {
+export function useList<TParams = unknown, TData = unknown>(
+  keyMethod: (filter: BaseParams<TParams>) => {
     queryKey: readonly unknown[]
     queryFn: QueryFunction<{ list: TData[]; count: number }, any>
   },
-  initialFilter?: TParams,
+  initialFilter?: BaseParams<TParams>,
   options?: Omit<
     UseQueryOptions<{ list: TData[]; count: number }>,
     'queryKey' | 'queryFn'
   >
 ) {
-  const resetParams = { limit: 10, offset: 0, ...initialFilter } as TParams
-  const [params, setParams] = useState<TParams>(resetParams)
+  const resetParams = {
+    limit: 10,
+    offset: 0,
+    ...initialFilter,
+  } as BaseParams<TParams>
+  const [params, setParams] = useState<BaseParams<TParams>>(resetParams)
 
   const queryResult = useQuery({
     queryKey: keyMethod(params).queryKey,

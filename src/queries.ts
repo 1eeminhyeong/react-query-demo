@@ -1,6 +1,6 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory'
 import axios from 'axios'
-import { BaseParams, useList } from './useList'
+import { useList } from './useList'
 
 const BASE_URL = 'https://my-json-server.typicode.com/1eeminhyeong/demo/'
 
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
   timeout: 30000,
 })
 
-type TodoFilter = BaseParams & {
+type TodoFilter = {
   done?: number
 }
 type Todo = {
