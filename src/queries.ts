@@ -39,7 +39,7 @@ export const useTodoList = () =>
   useQuery(todoKeys.list({ offset: 0, limit: 10 }))
 
 export const useTodoListQuery = () => {
-  return useList<TodoFilter, Todo, (typeof todoKeys)['list']>(todoKeys.list, {
+  return useList<TodoFilter, Todo>(todoKeys.list, {
     offset: 0,
     limit: 10,
   })

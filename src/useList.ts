@@ -1,15 +1,16 @@
 import { QueryFunction, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export function useList<
-  TFilter extends Record<string, any>,
-  TData,
-  TKey extends (filter: TFilter) => {
+type BaseFilter = {
+  offset?: number
+  limit?: number
+}
+
+export function useList<TFilter extends BaseFilter, TData>(
+  keyMethod: (filter: TFilter) => {
     queryKey: readonly unknown[]
     queryFn: QueryFunction<{ list: TData[]; count: number }, any>
   },
->(
-  keyMethod: TKey,
   initialFilter: TFilter,
   options?: UseQueryOptions<{ list: TData[]; count: number }>
 ) {
