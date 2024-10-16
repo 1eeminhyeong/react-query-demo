@@ -2,14 +2,15 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { useTodoList } from './queries'
+import { useTodoListQuery } from './queries'
 
 function App() {
   const [count, setCount] = useState(0)
 
-  const { data } = useTodoList()
+  const { data, filter, setFilter } = useTodoListQuery()
 
   console.log(data)
+  console.log(filter)
 
   return (
     <>
@@ -25,6 +26,10 @@ function App() {
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
+        </button>
+
+        <button onClick={() => setFilter((prev) => ({ ...prev, done: 0 }))}>
+          set Done True
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
