@@ -6,24 +6,27 @@ import {
 } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export type BaseFilter = {
+export type BaseParams = {
   offset?: number
   limit?: number
 }
 
-export function useList<TFilter extends BaseFilter, TData>(
-  keyMethod: (filter: TFilter) => {
+export function useList<
+  TParams extends BaseParams = BaseParams,
+  TData = unknown,
+>(
+  keyMethod: (filter: TParams) => {
     queryKey: readonly unknown[]
     queryFn: QueryFunction<{ list: TData[]; count: number }, any>
   },
-  initialFilter?: TFilter,
+  initialFilter?: TParams,
   options?: Omit<
     UseQueryOptions<{ list: TData[]; count: number }>,
     'queryKey' | 'queryFn'
   >
 ) {
-  const resetParams = { limit: 10, offset: 0, ...initialFilter } as TFilter
-  const [params, setParams] = useState<TFilter>(resetParams)
+  const resetParams = { limit: 10, offset: 0, ...initialFilter } as TParams
+  const [params, setParams] = useState<TParams>(resetParams)
 
   const queryResult = useQuery({
     queryKey: keyMethod(params).queryKey,
@@ -35,7 +38,7 @@ export function useList<TFilter extends BaseFilter, TData>(
   const onPageMove = (index: number) => {
     setParams((prev) => ({ ...prev, offset: (index - 1) * resetParams.limit! }))
   }
-  const onFilter = (newParams: Partial<TFilter>) => {
+  const onFilter = (newParams: Partial<TParams>) => {
     setParams((prev) => ({ ...prev, ...newParams }))
   }
 
