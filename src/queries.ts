@@ -31,6 +31,19 @@ const todoKeys = createQueryKeys('todo', {
   }),
 })
 
+export const exampleKeys = createQueryKeys('posts', {
+  all: null,
+  commonets: {
+    queryKey: null,
+    queryFn: async () => {
+      const res = await axios.get<{ postId: number; id: number; name: string; email: string; body: string }[]>(
+        'https://jsonplaceholder.typicode.com/comments'
+      )
+      return res.data
+    },
+  },
+})
+
 export const useTodoListQuery = () => {
   return useList(todoKeys.list)
 }

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import './App.css'
-import { useTodoListQuery } from './queries'
+import { exampleKeys, useTodoListQuery } from './queries'
 import { useCreatePost, useVoidMutation } from './todoQueries'
+import { useQuery } from '@tanstack/react-query'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -10,11 +11,14 @@ function App() {
   const { mutate } = useCreatePost()
   const { mutate: voidMutate } = useVoidMutation()
 
+  const { data } = useQuery(exampleKeys.commonets)
+
   return (
     <>
       <div></div>
       <h1>Vite + React</h1>
       <ol>{list?.map(({ id, title }) => <li key={id}>{title}</li>)}</ol>
+      <ol>{data?.map(({ body, id }) => <li key={id}>{body}</li>)}</ol>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
 
