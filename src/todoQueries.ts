@@ -1,6 +1,6 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory'
-import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useCustomMutation } from './useCustomMutation'
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com/'
 const axiosInstance = axios.create({
@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 type Filter = {
   page: number
 }
-const infinityTodoKey = createQueryKeys('infinityTodo', {
+export const infinityTodoKey = createQueryKeys('infinityTodo', {
   all: null,
   list: (filter: Filter) => ({
     queryKey: [{ filter }],
@@ -24,8 +24,18 @@ const infinityTodoKey = createQueryKeys('infinityTodo', {
   }),
 })
 
-const useInfinityTodoList = () => {
-  return useInfiniteQuery({
-    ...infinityTodoKey.list,
+type Todo = {
+  title: string
+  body: string
+  userId: number
+}
+export function useCreatePost() {
+  return useCustomMutation<Todo, Todo & { id: number }>({
+    mutationFn: (body) => axiosInstance.post('posts', body),
+  })
+}
+export function useVoidMutation() {
+  return useCustomMutation<unknown, Todo>({
+    mutationFn: () => axiosInstance.post('post22'),
   })
 }
