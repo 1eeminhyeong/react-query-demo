@@ -3,6 +3,7 @@ import './App.css'
 import { exampleKeys, useTodoListQuery } from './queries'
 import { useCreatePost, useVoidMutation } from './todoQueries'
 import { useQuery } from '@tanstack/react-query'
+import { hero } from './style.css'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
     <>
       <div></div>
       <h1>Vite + React</h1>
+      <p className={`${hero}`}>Hello World!</p>
       <ol>{list?.map(({ id, title }) => <li key={id}>{title}</li>)}</ol>
       <ol>{data?.map(({ body, id }) => <li key={id}>{body}</li>)}</ol>
       <div className="card">
