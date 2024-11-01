@@ -37,7 +37,8 @@ export const exampleKeys = createQueryKeys('posts', {
     queryKey: null,
     queryFn: async () => {
       const res = await axios.get<{ postId: number; id: number; name: string; email: string; body: string }[]>(
-        'https://jsonplaceholder.typicode.com/comments'
+        'https://jsonplaceholder.typicode.com/comments',
+        { params: { _limit: 10 } }
       )
       return res.data
     },

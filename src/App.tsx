@@ -4,6 +4,7 @@ import { exampleKeys, useTodoListQuery } from './queries'
 import { useCreatePost, useVoidMutation } from './todoQueries'
 import { useQuery } from '@tanstack/react-query'
 import { hero } from './style.css'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,9 +15,11 @@ function App() {
 
   const { data } = useQuery(exampleKeys.commonets)
 
+  const navigate = useNavigate()
+
   return (
     <>
-      <div></div>
+      <button onClick={() => navigate('/detail')}>Hi!</button>
       <h1>Vite + React</h1>
       <p className={`${hero}`}>Hello World!</p>
       <ol>{list?.map(({ id, title }) => <li key={id}>{title}</li>)}</ol>
