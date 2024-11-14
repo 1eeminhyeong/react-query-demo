@@ -2,6 +2,12 @@ import { createQueryKeys } from '@lukemorales/query-key-factory'
 import axios from 'axios'
 import { useList } from './useList'
 
+function sleep(timeout: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout)
+  })
+}
+
 const BASE_URL = 'https://my-json-server.typicode.com/1eeminhyeong/demo/'
 
 const axiosInstance = axios.create({
@@ -42,6 +48,10 @@ export const exampleKeys = createQueryKeys('posts', {
       )
       return res.data
     },
+  },
+  suspense: {
+    queryKey: null,
+    queryFn: () => sleep(2000).then(() => 'hello world!!'),
   },
 })
 

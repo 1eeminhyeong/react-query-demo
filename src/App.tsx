@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import './App.css'
 import { exampleKeys, useTodoListQuery } from './queries'
 import { useCreatePost, useVoidMutation } from './todoQueries'
 import { useQuery } from '@tanstack/react-query'
-import { hero } from './style.css'
 import { useNavigate } from 'react-router-dom'
+
+const LazyImport = lazy(() => import('./LazyImport'))
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,8 +21,10 @@ function App() {
   return (
     <>
       <button onClick={() => navigate('/detail')}>Hi!</button>
-      <h1>Vite + React</h1>
-      <p className={`${hero}`}>Hello World!</p>
+      <h1>Demo</h1>
+      <Suspense fallback="loading">
+        <LazyImport />
+      </Suspense>
       <ol>{list?.map(({ id, title }) => <li key={id}>{title}</li>)}</ol>
       <ol>{data?.map(({ body, id }) => <li key={id}>{body}</li>)}</ol>
       <div className="card">
