@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import { sortBy } from 'es-toolkit/compat'
+
 import { lazy, Suspense, useState } from 'react'
 import './App.css'
 import { exampleKeys, useTodoListQuery } from './queries'
@@ -17,6 +20,22 @@ function App() {
   const { data } = useQuery(exampleKeys.commonets)
 
   const navigate = useNavigate()
+
+  const symbol1 = Symbol ? Symbol('a') : null
+  const symbol2 = Symbol ? Symbol('b') : null
+  const array = [1, '2', NaN, NaN, symbol1, symbol2, {}, null, undefined]
+
+  // cosole.log('1', _.sortedIndex(array, 3)) // 2
+  // console.log('2', _.sortedIndex(array, symbol1)) // 3n
+
+  const array2 = [NaN, symbol1, null, 1, '2', {}, symbol2, NaN, undefined]
+  const test = sortBy(array2)
+
+  console.log('3', _.sortedIndex(test, 3)) // 2
+  console.log('4', _.sortedIndex(test, symbol1)) // 3
+  console.log('5', _.sortedIndex(test, null)) // 5
+
+  // console.log(_.sortedIndex([null, undefined], null))
 
   return (
     <>
